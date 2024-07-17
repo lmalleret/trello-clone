@@ -1,4 +1,4 @@
-@import "../../-settings.scss";
+@import "../../_settings.scss";
 
 .board-columns {
   display: flex;
@@ -18,5 +18,63 @@
     background-color: rgba($color: #fff, $alpha: 0.24);
     border-radius: 8px;
     background-clip: padding-box;
+  }
+
+  button {
+    border: none;
+    border-radius: $card-border-radius;
+    text-align: start;
+    height: 32px;
+    line-height: 32px;
+    cursor: pointer;
+    color: white;
+    margin-left: $gap;
+    font-size: 15px;
+    background-color: rgba(255, 255, 255, 0.24);
+  }
+
+  .btn-new-column {
+    width: 250px;
+
+    i {
+      padding: 4px 0 4px 15px;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.34);
+    }
+  }
+
+  .content-add-column {
+    margin-left: $gap;
+    background-color: rgba(255, 255, 255, 0.34);
+    border-radius: $card-border-radius;
+    padding: $gap;
+    height: 95px;
+
+    input {
+      width: calc(250px - #{2* $gap});
+      border-radius: $card-border-radius;
+      margin-right: $gap;
+      border: none;
+      margin: $gap 0;
+      padding: $gap;
+    }
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+
+      .btn-add-column {
+        margin: 0;
+        background-color: rgb(1, 124, 1)
+      }
+
+      i {
+        margin-left: $gap;
+        font-size: 24px;
+      }
+    }
   }
 }

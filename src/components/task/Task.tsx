@@ -5,9 +5,9 @@ function Task(props: any) {
   const { task, index } = props;
   return (
     <Draggable draggableId={task.id} index={index}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <li
-          className="task-item"
+          className={`task-item ${snapshot.isDragging ? "is-dragging" : ""}`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}

@@ -1,22 +1,27 @@
-@import '../../-settings.scss';
+@import "../../_settings.scss";
 
 li.task-item {
-    background-color: white;
-    padding: $gap;
+  background-color: white;
+  padding: $gap;
+  margin-bottom: $gap;
+  border-radius: $card-border-radius;
+  box-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.1);
+
+  &:not(:last-child) {
     margin-bottom: $gap;
-    border-radius: $card-border-radius;
-    box-shadow: 0 1px 1px rgba($color: #000000, $alpha: 0.1);
-
-    &:not(:last-child) {
-      margin-bottom: $gap;
-    }
-
-    img {
-      display: block;
-      width: calc(100% + 2 * #{$gap});
-      margin: -$gap 0 $gap (-$gap);
-
-      border-top-left-radius: $card-border-radius;
-      border-top-right-radius: $card-border-radius;
-    }
   }
+
+  img {
+    display: block;
+    width: calc(100% + 2 * #{$gap});
+    margin: -$gap 0 $gap (-$gap);
+
+    border-top-left-radius: $card-border-radius;
+    border-top-right-radius: $card-border-radius;
+  }
+}
+
+li.is-dragging {
+  background-color: #f0f0f0; // Cambia el color de fondo para destacar el elemento
+  box-shadow: 0 5px 15px rgba($color: #000000, $alpha: 0.3);
+}

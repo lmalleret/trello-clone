@@ -1,4 +1,4 @@
-@import "./-settings.scss";
+@import "./_settings.scss";
 
 body {
   margin: 0;
@@ -15,4 +15,10 @@ body {
   display: grid;
   grid-template-rows: 40px 50px 1fr;
   background-color: $board-bg-color;
+  color: $app-main-color;
+
+  .icon{
+    font-size: 14px;
+    margin-right: 3px;
+  }
 }

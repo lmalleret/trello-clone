@@ -1,4 +1,4 @@
-@import "../../-settings.scss";
+@import "../../_settings.scss";
 
 .column {
   flex: 0 0 auto;
@@ -49,5 +49,14 @@
     line-height: $column-footer-height;
     border-bottom-left-radius: $column-border-radius;
     border-bottom-right-radius: $column-border-radius;
+    color: #888;
+
+    .footer-action{
+      margin-left: 10px;
+      cursor: pointer;
+      &:hover{
+        color: #333;
+      }
+    }
   }
 }

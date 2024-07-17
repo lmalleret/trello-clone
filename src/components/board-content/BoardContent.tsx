@@ -1,14 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { initData } from "../../actions/initData";
 import Column from "../column/Column";
 import "./BoardContent.scss";
 import _ from "lodash";
 import { mapOrder } from "../../utilities/sorts";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
+import { v4 as uuidv4 } from "uuid";
 
 function BoardContent() {
   const [board, setBoard] = useState<any>({});
   const [columns, setColumns] = useState<any>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const inputRef = useRef(null);
+  const [newColumn, setNewColumn] = useState<any>({
+    id: 0,
+    boardId: 0,
+    title: "",
+    taskOrder: [],
+    tasks: [],
+  });
+
+  useEffect(() => {
+    if (open === true && inputRef && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [open]);
 
   useEffect(() => {
     const boardInitData = initData.boards.find((item) => item.id === "board-1");
@@ -25,7 +41,7 @@ function BoardContent() {
   }
 
   const onDragEnd = (result: DropResult) => {
-    const { source, destination, draggableId } = result;
+    const { source, destination, draggableId, type } = result;
 
     // Si no hay destino (fuera de cualquier droppable), no hacer nada
     if (!destination) {
@@ -37,6 +53,21 @@ function BoardContent() {
       source.droppableId === destination.droppableId &&
       source.index === destination.index
     ) {
+      return;
+    }
+
+    if (type === "column") {
+      const newColumnOrder = Array.from(board.columnOrder);
+      newColumnOrder.splice(source.index, 1);
+      newColumnOrder.splice(destination.index, 0, draggableId);
+
+      const newBoard = {
+        ...board,
+        columnOrder: newColumnOrder,
+      };
+
+      setBoard(newBoard);
+      setColumns(mapOrder(newBoard.columns, newBoard.columnOrder, "id"));
       return;
     }
 
@@ -62,7 +93,13 @@ function BoardContent() {
         col.id === newColumn.id ? newColumn : col
       );
 
+      const newBoard = {
+        ...board,
+        columns: newColumns,
+      };
+
       setColumns(newColumns);
+      setBoard(newBoard);
     } else {
       // Si se está moviendo a otra columna
       const startTaskOrder = Array.from(startColumn.taskOrder);
@@ -79,7 +116,7 @@ function BoardContent() {
       const endTaskOrder = Array.from(endColumn.taskOrder);
       const endTaskList = Array.from(endColumn.tasks);
       endTaskOrder.splice(destination.index, 0, draggableId);
-      endTaskList.splice(destination.index, 0, task[0])
+      endTaskList.splice(destination.index, 0, task[0]);
 
       const newEndColumn = {
         ...endColumn,
@@ -97,18 +134,80 @@ function BoardContent() {
         return col;
       });
 
+      const newBoard = {
+        ...board,
+        columns: newColumns,
+      };
+
       setColumns(newColumns);
+      setBoard(newBoard);
     }
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewColumn({ ...newColumn, [event.target.name]: event.target.value });
+  };
+
+  const addColumn = () => {
+    const _columns = _.cloneDeep(columns);
+    _columns.push({ ...newColumn, boardId: board.id, id: uuidv4() });
+    setColumns(_columns);
+    const newColumnOrder = _columns.map((col: any) => col.id);
+    setBoard({ ...board, columnOrder: newColumnOrder, columns: _columns });
+  };
+
   return (
-    <div className="board-columns">
+    <>
       <DragDropContext onDragEnd={onDragEnd}>
-        {columns.map((column: any) => (
-          <Column key={column.id} column={column} />
-        ))}
+        <Droppable
+          droppableId="all-columns"
+          direction="horizontal"
+          type="column"
+        >
+          {(provided) => (
+            <div
+              className="board-columns"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {columns &&
+                columns.map((column: any, index: number) => (
+                  <Column key={column.id} column={column} index={index} />
+                ))}
+              {!open ? (
+                <button
+                  className="btn-new-column"
+                  onClick={() => setOpen(true)}
+                >
+                  <i className="fa fa-plus icon"> </i> Add another column
+                </button>
+              ) : (
+                <div className="content-add-column">
+                  <input
+                    type="text"
+                    className="form-control"
+                    ref={inputRef}
+                    name="title"
+                    value={newColumn.title}
+                    onChange={handleChange}
+                  />
+                  <div>
+                    <button className="btn-add-column" onClick={addColumn}>
+                      Add list
+                    </button>
+                    <i
+                      className="fa fa-times icon"
+                      onClick={() => setOpen(false)}
+                    ></i>
+                  </div>
+                </div>
+              )}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
       </DragDropContext>
-    </div>
+    </>
   );
 }
 
