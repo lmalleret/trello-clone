@@ -1,0 +1,9 @@
+@import '../../-settings.scss';
+
+.navbar-app {
+  padding-left: 10px;
+  gap: $gap;
+  align-items: center;
+  font-size: 1.5rem;
+  background-color: $navbar-app-bg-color;
+}
