@@ -15,7 +15,9 @@ export const initData = {
               boardId: "board-1",
               columnId: "column-1",
               title: "Title of task 1",
-              image: "https://raw.githubusercontent.com/haryphamdev/sharing-host-files/master/trello/img-design.png",
+              image:
+                "https://raw.githubusercontent.com/haryphamdev/sharing-host-files/master/trello/img-design.png",
+              delete: false,
             },
             {
               id: "task-2",
@@ -23,6 +25,7 @@ export const initData = {
               columnId: "column-1",
               title: "Title of task 2",
               image: null,
+              delete: false,
             },
             {
               id: "task-3",
@@ -30,6 +33,7 @@ export const initData = {
               columnId: "column-1",
               title: "Title of task 3",
               image: null,
+              delete: false,
             },
             {
               id: "task-4",
@@ -37,8 +41,10 @@ export const initData = {
               columnId: "column-1",
               title: "Title of task 4",
               image: null,
+              delete: false,
             },
           ],
+          delete: false,
         },
         {
           id: "column-2",
@@ -51,7 +57,9 @@ export const initData = {
               boardId: "board-1",
               columnId: "column-2",
               title: "Title of task 5",
-              image: "https://raw.githubusercontent.com/haryphamdev/sharing-host-files/master/trello/img-design.png",
+              image:
+                "https://raw.githubusercontent.com/haryphamdev/sharing-host-files/master/trello/img-design.png",
+              delete: false,
             },
             {
               id: "task-6",
@@ -59,6 +67,7 @@ export const initData = {
               columnId: "column-2",
               title: "Title of task 6",
               image: null,
+              delete: false,
             },
             {
               id: "task-7",
@@ -66,6 +75,7 @@ export const initData = {
               columnId: "column-2",
               title: "Title of task 7",
               image: null,
+              delete: false,
             },
             {
               id: "task-8",
@@ -73,8 +83,10 @@ export const initData = {
               columnId: "column-2",
               title: "Title of task 8",
               image: null,
+              delete: false,
             },
           ],
+          delete: false,
         },
         {
           id: "column-3",
@@ -87,7 +99,9 @@ export const initData = {
               boardId: "board-1",
               columnId: "column-3",
               title: "Title of task 9",
-              image: "https://raw.githubusercontent.com/haryphamdev/sharing-host-files/master/trello/img-design.png",
+              image:
+                "https://raw.githubusercontent.com/haryphamdev/sharing-host-files/master/trello/img-design.png",
+              delete: false,
             },
             {
               id: "task-10",
@@ -95,6 +109,7 @@ export const initData = {
               columnId: "column-3",
               title: "Title of task 10",
               image: null,
+              delete: false,
             },
             {
               id: "task-11",
@@ -102,6 +117,7 @@ export const initData = {
               columnId: "column-3",
               title: "Title of task 11",
               image: null,
+              delete: false,
             },
             {
               id: "task-12",
@@ -109,10 +125,14 @@ export const initData = {
               columnId: "column-3",
               title: "Title of task 12",
               image: null,
+              delete: false,
             },
           ],
+          delete: false,
         },
       ],
+      delete: false,
     },
   ],
+  delete: false,
 };
