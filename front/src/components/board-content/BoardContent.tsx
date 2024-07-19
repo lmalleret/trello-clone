@@ -11,7 +11,7 @@ function BoardContent() {
   const [board, setBoard] = useState<any>({});
   const [columns, setColumns] = useState<any>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [newColumn, setNewColumn] = useState<any>({
     id: 0,
     boardId: 0,
@@ -191,8 +191,8 @@ function BoardContent() {
                     value={newColumn.title}
                     onChange={handleChange}
                   />
-                  <div>
-                    <button className="btn-add-column" onClick={addColumn}>
+                  <div className="group-btn">
+                    <button className="btn btn-success" onClick={addColumn}>
                       Add list
                     </button>
                     <i

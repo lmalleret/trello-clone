@@ -3,7 +3,7 @@ import "./AppBar.scss";
 function AppBar() {
   return (
     <>
-      <nav className="navbar-app"></nav>
+      <nav className="navbar-app">Trello Clone</nav>
     </>
   );
 }
