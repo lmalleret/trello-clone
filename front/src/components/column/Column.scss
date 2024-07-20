@@ -20,15 +20,19 @@
     font-weight: bold;
     border-top-left-radius: $column-border-radius;
     border-top-right-radius: $column-border-radius;
+
+    .form-control {
+      margin: 2px 0 0 0;
+    }
   }
 
-  .column-drag-handle{
+  .column-drag-handle {
     display: flex;
     justify-content: space-between;
 
-    .column-dropdown{
-      .dropdown-toggle{
-        &:hover{
+    .column-dropdown {
+      .dropdown-toggle {
+        &:hover {
           background-color: #091e4214;
         }
       }
@@ -58,17 +62,38 @@
 
   footer {
     padding-left: 10px;
-    height: $column-footer-height;
     line-height: $column-footer-height;
     border-bottom-left-radius: $column-border-radius;
     border-bottom-right-radius: $column-border-radius;
     color: #888;
 
-    .footer-action{
+    .footer-action {
       margin-left: 10px;
       cursor: pointer;
-      &:hover{
+      &:hover {
         color: #333;
+      }
+    }
+
+    .content-add-task {
+      min-width: 250px;
+      height: fit-content;
+      border-radius: $card-border-radius;
+
+      .form-control {
+        width: 100%;
+      }
+
+      .group-btn {
+        display: flex;
+        padding: 10px 0; 
+        align-items: center;
+
+        i {
+          font-size: 30px;
+          padding-left: 10px;
+          cursor: pointer;
+        }
       }
     }
   }

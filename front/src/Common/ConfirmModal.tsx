@@ -2,9 +2,12 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function ConfirmModal(props: any) {
-  const { title, content, open, setOpen} = props;
+  const { title, content, open, setOpen, action } = props;
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    action();
+    setOpen(false);
+  };
 
   return (
     <>

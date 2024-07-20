@@ -5,6 +5,7 @@
   margin: 0 $gap $gap;
   gap: $gap;
   overflow-x: auto;
+  overflow-y: hidden;
 
   &::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -21,7 +22,7 @@
   }
 
   .btn-new-column {
-    width: 250px;
+    min-width: 250px;
     border-radius: $card-border-radius;
     border: none;
     text-align: start;
@@ -40,12 +41,16 @@
   }
 
   .content-add-column {
-    width: 250px;
+    min-width: 250px;
+    height: fit-content;
     margin-left: 10px;
     background-color: rgba(255, 255, 255, 0.34);
     border-radius: $card-border-radius;
     padding: 5px;
-    height: 95px;
+
+    .form-control{
+      width: 100%;
+    }
 
     .group-btn {
       display: flex;
