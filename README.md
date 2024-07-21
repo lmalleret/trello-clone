@@ -87,3 +87,7 @@ Para iniciar la aplicación:
 ```bash
   npm run dev
 ```
+
+## Demo Video
+
+[![Watch the video](https://github.com/lmalleret/trello-clone/blob/main/demo-video.mp4)
