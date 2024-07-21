@@ -19,6 +19,20 @@ li.task-item {
     border-top-left-radius: $card-border-radius;
     border-top-right-radius: $card-border-radius;
   }
+
+  .task {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span {
+      white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+      overflow: hidden; /* Oculta el texto que se desborda del contenedor */
+      text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto que se desborda */
+      width: 100%; /* Asegura que el contenedor tenga un ancho definido */
+      display: block;
+    }
+  }
 }
 
 li.is-dragging {

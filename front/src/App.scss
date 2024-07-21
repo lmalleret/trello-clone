@@ -15,6 +15,8 @@ body {
   display: grid;
   grid-template-rows: 40px 40px 1fr;
   background-color: $board-bg-color;
+  background-image: url(./assets/images/pexels-eberhardgross-691668.jpg);
+  background-size:cover;
   color: $app-main-color;
 
   .icon{

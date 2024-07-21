@@ -7,20 +7,29 @@ import { Dropdown, FormControl } from "react-bootstrap";
 import ConfirmModal from "../../Common/ConfirmModal";
 import { useEffect, useRef, useState } from "react";
 import { useBoard } from "../../contexts/boardContext";
+import { Column as ColumnType } from "../../types/column.type";
+import { Task as TaskType } from "../../types/task.type";
+import { ActionState } from "../../types/actionState.type";
 
-function Column(props: any) {
-  const { column, index, boardId } = props;
-  const { deleteColumn, addTask } = useBoard();
+interface ColumnProps {
+  column: ColumnType;
+  index: number;
+  boardId: string;
+}
+
+const Column: React.FC<ColumnProps> = ({ column, index, boardId }) => {
+  const { deleteColumn, addTask, updateColumnTitle } = useBoard();
   const tasks = mapOrder(column.tasks, column.taskOrder, "id");
   const [open, setOpen] = useState(false);
-  const [action, setAction] = useState<any>({
+  const [action, setAction] = useState<ActionState>({
     title: "",
     content: <p></p>,
     action: null,
   });
-  const [updateTitle, setUpdateTitle] = useState(false);
+  const [updateTitle, setUpdateTitle] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [taskTitle, setTaskTitle] = useState<string>("");
+  const [newColumnTitle, setNewColumnTitle] = useState<string>("");
   const [newTask, setNewTask] = useState<boolean>(false);
 
   const handleDelete = () => {
@@ -31,24 +40,25 @@ function Column(props: any) {
           Are you sure you want to delete: <b>{column.title}</b>
         </p>
       ),
-      action: () => deleteColumn(boardId, column.id),
+      action: () => {
+        deleteColumn(boardId, column.id);
+        setOpen(false);
+      },
     });
     setOpen(true);
   };
 
   useEffect(() => {
-    if (updateTitle && inputRef.current) {
+    if ((newTask || updateTitle) && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [updateTitle]);
+  }, [newTask, updateTitle]);
 
-  const handleUpdateTitle = () => {
-    //lógica para cambiar título
-    setUpdateTitle(false);
-  };
-
-  const handleTaskTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskTitle(event.target.value);
+  const handleUpdateTitle = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      updateColumnTitle(boardId, column.id, newColumnTitle);
+      setUpdateTitle(false);
+    }
   };
 
   return (
@@ -60,17 +70,16 @@ function Column(props: any) {
           ref={provided.innerRef}
         >
           <header {...provided.dragHandleProps} className="column-drag-handle">
-            <div
-              className="column-title"
-              onClick={() => setUpdateTitle(true)}
-              onBlur={handleUpdateTitle}
-            >
+            <div className="column-title">
               {updateTitle ? (
                 <FormControl
                   type="text"
                   className="form-control"
                   ref={inputRef}
                   size="sm"
+                  value={newColumnTitle}
+                  onChange={(e) => setNewColumnTitle(e.target.value)}
+                  onKeyDown={handleUpdateTitle}
                 />
               ) : (
                 column.title
@@ -78,13 +87,11 @@ function Column(props: any) {
             </div>
             <div className="column-dropdown">
               <Dropdown>
-                <Dropdown.Toggle
-                  variant=""
-                  id="dropdown-basic"
-                  size="sm"
-                ></Dropdown.Toggle>
+                <Dropdown.Toggle variant="" id="dropdown-basic" size="sm"></Dropdown.Toggle>
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#">Add card</Dropdown.Item>
+                  <Dropdown.Item href="#" onClick={() => setUpdateTitle(true)}>
+                    Edit column title
+                  </Dropdown.Item>
                   <Dropdown.Item href="#" onClick={handleDelete}>
                     Remove column
                   </Dropdown.Item>
@@ -95,13 +102,9 @@ function Column(props: any) {
           </header>
           <Droppable droppableId={column.id} type="task">
             {(provided) => (
-              <ul
-                className="task-list"
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {tasks.map((task: any, index: number) => (
-                  <Task key={task.id} task={task} index={index} />
+              <ul className="task-list" ref={provided.innerRef} {...provided.droppableProps}>
+                {tasks.map((task: TaskType, index: number) => (
+                  <Task key={task.id} task={task} index={index} columnId={column.id} boardId={boardId} />
                 ))}
                 {provided.placeholder}
               </ul>
@@ -116,7 +119,7 @@ function Column(props: any) {
                   ref={inputRef}
                   name="title"
                   value={taskTitle}
-                  onChange={handleTaskTitle}
+                  onChange={(e) => setTaskTitle(e.target.value)}
                 />
                 <div className="group-btn">
                   <button
@@ -129,10 +132,7 @@ function Column(props: any) {
                   >
                     Add list
                   </button>
-                  <i
-                    className="fa fa-times icon"
-                    onClick={() => setNewTask(false)}
-                  ></i>
+                  <i className="fa fa-times icon" onClick={() => setNewTask(false)}></i>
                 </div>
               </div>
             ) : (
@@ -152,6 +152,6 @@ function Column(props: any) {
       )}
     </Draggable>
   );
-}
+};
 
 export default Column;

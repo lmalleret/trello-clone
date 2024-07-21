@@ -3,15 +3,16 @@ import Column from "../column/Column";
 import "./BoardContent.scss";
 import _ from "lodash";
 import { mapOrder } from "../../utilities/sorts";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useBoard } from "../../contexts/boardContext";
-import { onDragEnd } from "../../utilities/onDragEnd";
+import { Board } from "../../types/board.type";
+import { Column as ColumnType } from "../../types/column.type";
 
 function BoardContent() {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { boards, addColumn } = useBoard();
-  const [board, setBoard] = useState<any>({});
-  const [columns, setColumns] = useState<any>([]);
+  const { boards, addColumn, onDragEnd } = useBoard();
+  const [board, setBoard] = useState<Board | undefined>(undefined);
+  const [columns, setColumns] = useState<ColumnType[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [columnTitle, setColumnTitle] = useState<string>("");
 
@@ -23,9 +24,11 @@ function BoardContent() {
 
   useEffect(() => {
     if (!_.isEmpty(boards)) {
-      const board = boards.find((board: any) => board.id === "board-1");
-      setBoard(board);
-      setColumns(mapOrder(board.columns, board.columnOrder, "id"));
+      const board = boards.find((board: Board) => board.id === "board-1");
+      if (board) {
+        setBoard(board);
+        setColumns(mapOrder(board.columns, board.columnOrder, "id"));
+      }
     }
   }, [boards]);
 
@@ -33,41 +36,35 @@ function BoardContent() {
     setColumnTitle(event.target.value);
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    if (board) {
+      onDragEnd(result, board.id);
+    }
+  };
+
   return (
     <>
       {_.isEmpty(boards) ? (
         <p>Board not found</p>
       ) : (
-        <DragDropContext
-          onDragEnd={(result) =>
-            onDragEnd(result, board, columns, setBoard, setColumns)
-          }
-        >
-          <Droppable
-            droppableId="all-columns"
-            direction="horizontal"
-            type="column"
-          >
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="all-columns" direction="horizontal" type="column">
             {(provided) => (
               <div
                 className="board-columns"
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {columns &&
-                  columns.map((column: any, index: number) => (
-                    <Column
-                      key={column.id}
-                      column={column}
-                      index={index}
-                      boardId={board.id}
-                    />
-                  ))}
+                {columns.map((column, index) => (
+                  <Column
+                    key={column.id}
+                    column={column}
+                    index={index}
+                    boardId={board!.id}
+                  />
+                ))}
                 {!open ? (
-                  <button
-                    className="btn-new-column"
-                    onClick={() => setOpen(true)}
-                  >
+                  <button className="btn-new-column" onClick={() => setOpen(true)}>
                     <i className="fa fa-plus icon"> </i> Add another column
                   </button>
                 ) : (
@@ -84,17 +81,16 @@ function BoardContent() {
                       <button
                         className="btn btn-success"
                         onClick={() => {
-                          addColumn(board.id, columnTitle);
-                          setOpen(false);
-                          setColumnTitle("");
+                          if (board) {
+                            addColumn(board.id, columnTitle);
+                            setOpen(false);
+                            setColumnTitle("");
+                          }
                         }}
                       >
                         Add list
                       </button>
-                      <i
-                        className="fa fa-times icon"
-                        onClick={() => setOpen(false)}
-                      ></i>
+                      <i className="fa fa-times icon" onClick={() => setOpen(false)}></i>
                     </div>
                   </div>
                 )}

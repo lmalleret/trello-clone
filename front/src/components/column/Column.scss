@@ -31,6 +31,7 @@
     justify-content: space-between;
 
     .column-dropdown {
+      margin-right: 10px;
       .dropdown-toggle {
         &:hover {
           background-color: #091e4214;
@@ -42,6 +43,7 @@
   ul.task-list {
     list-style-type: none;
     margin: 0;
+    min-height: 30px;
     max-height: calc(
       100% - #{$column-header-height} - #{$column-footer-height}
     );
