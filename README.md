@@ -71,7 +71,7 @@ Esta es una aplicación de tablero Kanban creada con React y TypeScript en el fr
 ├── tsconfig.json
 ├── vite.config.ts
 └── README.md
-
+```
 
 ## Instación y ejecución
 
@@ -82,6 +82,7 @@ Para instalar las dependencias del front:
   cd <NOMBRE_DEL_REPOSITORIO>
   npm install
 ```
+
 Para iniciar la aplicación:
 ```bash
   npm run dev
